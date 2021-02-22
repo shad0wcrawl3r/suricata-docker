@@ -1,0 +1,50 @@
+version: '3.7'
+
+services:
+  
+  elasticsearch:
+    image: elasticsearch:7.9.1
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+    ports: 
+      - "9200:9200"
+      - "9300:9300"
+    volumes: 
+      - ./Docker/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    networks:
+      for-surikata:
+        ipv4_address: 192.168.205.18
+    
+  logstash:
+    image: logstash:7.9.1
+    container_name: logstash
+    
+
+    depends_on:
+    - elasticsearch   
+    ports:
+    - "9600:9600"
+    networks: 
+      for-surikata:
+        ipv4_address: 192.168.205.20
+    
+  
+  suricata:
+    container_name: suricata
+    build:
+      context: "Docker"
+      dockerfile: Dockerfile
+    volumes:
+      - ./Docker/config/suricata.yaml:/etc/suricata/surikata.yaml
+    
+networks: 
+  for-surikata:
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.205.16/28
