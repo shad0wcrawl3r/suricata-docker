@@ -1,0 +1,14 @@
+filebeat.prospectors:
+- type: log
+  enabled: true
+  paths:
+    - /var/log/suricata/eve.json
+filebeat.config.modules:
+  strict.perms: false
+  path: ${path.config}/modules.d/*.yml
+  reload.enabled: false
+setup.template.settings:
+  index.number_of_shards: 3
+setup.kibana:
+output.logstash:
+  hosts: ["localhost:5044"]
