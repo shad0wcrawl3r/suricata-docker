@@ -12,7 +12,7 @@
 vars:
   # more specific is better for alert accuracy and performance
   address-groups:
-    HOME_NET: "[192.168.0.0/16,10.0.0.0/8,172.16.0.0/12]"
+    HOME_NET: "[192.168.205.0/24]"
     #HOME_NET: "[192.168.0.0/16]"
     #HOME_NET: "[10.0.0.0/8]"
     #HOME_NET: "[172.16.0.0/12]"
@@ -27,8 +27,6 @@ vars:
     DNS_SERVERS: "$HOME_NET"
     TELNET_SERVERS: "$HOME_NET"
     AIM_SERVERS: "$EXTERNAL_NET"
-    DC_SERVERS: "$HOME_NET"
-    DNP3_SERVER: "$HOME_NET"
     DNP3_CLIENT: "$HOME_NET"
     MODBUS_CLIENT: "$HOME_NET"
     MODBUS_SERVER: "$HOME_NET"
@@ -55,7 +53,7 @@ vars:
 # The default logging directory.  Any log or output file will be
 # placed here if it's not specified with a full path name. This can be
 # overridden with the -l command line parameter.
-default-log-dir: @e_logdir@
+default-log-dir: "/var/log/suricata"
 
 # Global stats configuration
 stats:
@@ -82,7 +80,7 @@ outputs:
 
   # Extensible Event Format (nicknamed EVE) event log in JSON format
   - eve-log:
-      enabled: @e_enable_evelog@
+      enabled: yes
       filetype: regular #regular|syslog|unix_dgram|unix_stream|redis
       filename: eve.json
       # Enable for multi-threaded eve.json output; output files are amended with
@@ -1065,8 +1063,8 @@ unix-command:
   #filename: custom.socket
 
 # Magic file. The extension .mgc is added to the value here.
-#magic-file: /usr/share/file/magic
-@e_magic_file_comment@magic-file: @e_magic_file@
+magic-file: /usr/share/file/magic
+# @e_magic_file_comment@magic-file: @e_magic_file@
 
 # GeoIP2 database file. Specify path and filename of GeoIP2 database
 # if using rules with "geoip" rule option.
@@ -1528,7 +1526,7 @@ profiling:
     limit: 10
 
     # output to json
-    json: @e_enable_evelog@
+    json: yes
 
   # per keyword profiling
   keywords:
@@ -1856,7 +1854,7 @@ napatech:
 ## Configure Suricata to load Suricata-Update managed rules.
 ##
 
-default-rule-path: @e_defaultruledir@
+default-rule-path: "/etc/suricata/rules"
 
 rule-files:
   - suricata.rules
@@ -1865,8 +1863,8 @@ rule-files:
 ## Auxiliary configuration files.
 ##
 
-classification-file: @e_sysconfdir@classification.config
-reference-config-file: @e_sysconfdir@reference.config
+classification-file: "/etc/suricata/classification.config"
+reference-config-file: "/etc/suricata/reference.config"
 # threshold-file: @e_sysconfdir@threshold.config
 
 ##
