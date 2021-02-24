@@ -139,13 +139,13 @@ logging:
       facility: local5
       format: "[%i] <%d> -- "
 af-packet:
-  - interface: ["eth0","wlp3s0","lo"]
+  - interface: "wlp3s0"
     cluster-id: 99
     cluster-type: cluster_flow
     defrag: yes
   - interface: default
 pcap:
-  - interface: eth0
+  - interface: wlp3s0
   - interface: default
 pcap-file:
   checksum-checks: auto
