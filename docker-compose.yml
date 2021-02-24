@@ -39,9 +39,14 @@ services:
     build:
       context: "Docker"
       dockerfile: Dockerfile
+      # image: suricata_test
+      # ERROR: The Compose file './docker-compose.yml' is invalid because:
+      # services.suricata.build contains unsupported option: 'image'
     volumes:
       - ./Docker/config/suricata.yaml:/etc/suricata/surikata.yaml
     
+    network_mode: "host"
+
 networks: 
   for-surikata:
     ipam:
