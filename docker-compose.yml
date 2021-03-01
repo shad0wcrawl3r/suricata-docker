@@ -49,7 +49,7 @@ services:
     - "9600:9600"
     volumes: 
       - ./Docker/config/to_elastic.conf:/usr/share/logstash/pipeline/logstash.conf
-      # - ./Docker/config/logstash.yml:/usr/share/logstash/config/logstash.yml
+      - ./Docker/config/logstash.yml:/usr/share/logstash/config/logstash.yml
     networks: 
       for-surikata-IDS:
         ipv4_address: 192.168.205.20
@@ -68,10 +68,15 @@ services:
       - ./Docker/config/suricata.yaml:/etc/suricata/surikata.yaml
     depends_on: 
       - kibana
+    
     networks:
       for-surikata-IDS:
         ipv4_address: 192.168.205.21
-
+    
+    cap_add: 
+      - NET_ADMIN
+      - SYS_ADMIN
+    
 
 networks: 
   for-surikata-IDS:
@@ -79,4 +84,7 @@ networks:
       driver: default
       config:
         - subnet: 192.168.205.16/28
+  
+  # for-inline:
+
 
