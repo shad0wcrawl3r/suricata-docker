@@ -18,7 +18,7 @@ services:
         soft: -1
         hard: -1
     networks:
-      for-surikata:
+      for-surikata-IDS:
         ipv4_address: 192.168.205.18
    
   kibana:
@@ -34,7 +34,7 @@ services:
         soft: -1
         hard: -1
     networks:
-      for-surikata:
+      for-surikata-IDS:
         ipv4_address: 192.168.205.19
     depends_on: 
       - elasticsearch
@@ -51,7 +51,7 @@ services:
       - ./Docker/config/to_elastic.conf:/usr/share/logstash/pipeline/logstash.conf
       # - ./Docker/config/logstash.yml:/usr/share/logstash/config/logstash.yml
     networks: 
-      for-surikata:
+      for-surikata-IDS:
         ipv4_address: 192.168.205.20
     depends_on: 
       - elasticsearch
@@ -68,11 +68,15 @@ services:
       - ./Docker/config/suricata.yaml:/etc/suricata/surikata.yaml
     depends_on: 
       - kibana
-    network_mode: "host"
+    networks:
+      for-surikata-IDS:
+        ipv4_address: 192.168.205.21
+
 
 networks: 
-  for-surikata:
+  for-surikata-IDS:
     ipam:
       driver: default
       config:
         - subnet: 192.168.205.16/28
+
