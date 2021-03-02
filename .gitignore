@@ -129,5 +129,4 @@ dmypy.json
 .pyre/
 
 #custom :)
-./Docker/logs/*
 Docker/logs/eve.json
