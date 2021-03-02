@@ -1,7 +1,5 @@
 path.data: /usr/share/logstash
 pipeline.workers: 2
 pipeline.ordered: auto
-var.elasticsearch.host: "http://192.168.205.18:9200"
-var.kibana.host: "http://192.168.205.19:5601"
 path.logs: /var/log/logstash
 xpack.monitoring.enabled: false

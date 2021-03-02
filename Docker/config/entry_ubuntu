@@ -1,0 +1,5 @@
+#!/bin/bash
+apt update
+apt install iptables net-tools iproute2 inetutils-ping traceroute -y
+iptables -t mangle -A PREROUTING -i eth0 -j TEE --gateway 192.168.203.2
+tail -F /var/log/dpkg.log

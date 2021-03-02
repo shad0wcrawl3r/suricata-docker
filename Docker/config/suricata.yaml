@@ -2,7 +2,7 @@
 ---
 vars:
   address-groups:
-    HOME_NET: "[192.168.205.0/24]"
+    HOME_NET: "[192.168.203.0/28]"
     EXTERNAL_NET: "!$HOME_NET"
     HTTP_SERVERS: "$HOME_NET"
     SMTP_SERVERS: "$HOME_NET"
@@ -139,13 +139,13 @@ logging:
       facility: local5
       format: "[%i] <%d> -- "
 af-packet:
-  - interface: "wlp3s0"
+  - interface: "eth0"
     cluster-id: 99
     cluster-type: cluster_flow
     defrag: yes
   - interface: default
 pcap:
-  - interface: wlp3s0
+  - interface: eth0
   - interface: default
 pcap-file:
   checksum-checks: auto

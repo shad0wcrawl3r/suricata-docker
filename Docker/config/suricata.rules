@@ -1,0 +1,6 @@
+alert http any any -> any any (msg:"Test" sid:1;)
+
+#action protocol src srcport -> dest destpot (msg, sid)
+
+
+#alert https any any <> facebook.com 443 (msg:"connected to facebook", sid="unique Number")

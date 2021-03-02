@@ -6,7 +6,7 @@ FROM ubuntu:latest
 RUN apt update
 
 # install tools to add repositories
-RUN apt install -y software-properties-common wget apt-transport-https
+RUN apt install -y software-properties-common wget apt-transport-https net-tools
 
 # install the repository for filebeat and suricata
 RUN add-apt-repository ppa:oisf/suricata-stable
@@ -20,6 +20,7 @@ RUN apt update
 # install filebeat and suricata
 RUN apt install -y filebeat suricata jq
 
+
 #add the config files
 ADD config/suricata.yaml /etc/suricata/suricata.yaml
 ADD config/filebeat.yml /etc/filebeat/filebeat.yml
@@ -27,6 +28,6 @@ RUN chown root /etc/filebeat/filebeat.yml
 RUN chmod 0644 /etc/filebeat/filebeat.yml
 
 #start the services and tail the logfile to keep the container alive
-CMD service suricata start && service filebeat start && tail -F /var/log/suricata/suricata-start.log
-# 
+CMD service suricata start && service filebeat start &&tail -F /var/log/suricata/suricata-start.log
+
 
