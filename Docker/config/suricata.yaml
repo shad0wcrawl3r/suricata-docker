@@ -416,10 +416,10 @@ nflog:
     max-size: 20000
 capture:
 netmap:
- - interface: eth2
+ - interface: eth0
  - interface: default
 pfring:
-  - interface: wlp3s0
+  - interface: eth0
     threads: auto
     cluster-id: 99
     cluster-type: cluster_flow
