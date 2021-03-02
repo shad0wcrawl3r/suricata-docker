@@ -4,4 +4,4 @@ A docker implementation of suricata combined with the Elasticsearch, Kibana, and
 
 Network Data passes in the following manner:
 
-HOST >> Suricata w/ filebeat >> Logstash >> Elasticsearch >> Kibana
+HOST >> Suricata >> Logstash >> Elasticsearch >> Kibana
