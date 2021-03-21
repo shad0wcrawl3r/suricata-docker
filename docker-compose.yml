@@ -1,18 +1,16 @@
 version: '3.7'
-# env_file: "./Docker/config/env"
 services:
-  
   elasticsearch:
-    env_file: "./Docker/config/env"
-    image: elasticsearch:7.9.1
+    env_file: ./Docker/config/env
+    image: 'elasticsearch:7.9.1'
     container_name: elasticsearch
     environment:
       - discovery.type=single-node
-    ports: 
-      - "9200:9200"
-      - "9300:9300"
-    volumes: 
-      - ./Docker/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    ports:
+      - '9200:9200'
+      - '9300:9300'
+    volumes:
+      - './Docker/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml'
     ulimits:
       memlock:
         soft: -1
@@ -20,15 +18,14 @@ services:
     networks:
       for-surikata-IDS:
         ipv4_address: 192.168.205.18
-   
   kibana:
-    image: kibana:7.9.1
-    env_file: "./Docker/config/env"
+    image: 'kibana:7.9.1'
+    env_file: ./Docker/config/env
     container_name: kibana
     ports:
-      - "5601:5601"
-    volumes: 
-      - ./Docker/config/kibana.yml:/usr/share/kibana/config/kibana.yml     
+      - '5601:5601'
+    volumes:
+      - './Docker/config/kibana.yml:/usr/share/kibana/config/kibana.yml'
     ulimits:
       memlock:
         soft: -1
@@ -36,67 +33,56 @@ services:
     networks:
       for-surikata-IDS:
         ipv4_address: 192.168.205.19
-    depends_on: 
+    depends_on:
       - elasticsearch
-
   logstash:
-    image: logstash:7.9.1
-    env_file: "./Docker/config/env"
+    image: 'logstash:7.9.1'
+    env_file: ./Docker/config/env
     container_name: logstash
     depends_on:
-    - elasticsearch   
-    ports:
-    - "9600:9600"
-    volumes: 
-      - ./Docker/logs/eve.json:/var/log/eve.json
-      - ./Docker/config/to_elastic.conf:/usr/share/logstash/pipeline/logstash.conf
-      - ./Docker/config/logstash.yml:/usr/share/logstash/config/logstash.yml
-    networks: 
-      for-surikata-IDS:
-        ipv4_address: 192.168.205.20
-    depends_on: 
       - elasticsearch
       - suricata
-  
+    ports:
+      - '9600:9600'
+    volumes:
+      - './Docker/logs/eve.json:/var/log/eve.json'
+      - './Docker/config/to_elastic.conf:/usr/share/logstash/pipeline/logstash.conf'
+      - './Docker/config/logstash.yml:/usr/share/logstash/config/logstash.yml'
+    networks:
+      for-surikata-IDS:
+        ipv4_address: 192.168.205.20
   suricata:
     container_name: suricata
     build:
-      context: "Docker"
+      context: Docker
       dockerfile: Dockerfile
-      # image: suricata_test
-      # ERROR: The Compose file './docker-compose.yml' is invalid because:
-      # services.suricata.build contains unsupported option: 'image'
     volumes:
-      - ./Docker/config/suricata.yaml:/etc/suricata/suricata.yaml
-      - ./Docker/logs/eve.json:/var/log/suricata/eve.json
-      - ./Docker/config/suricata.rules:/etc/suricata/rules/suricata.rules
-    depends_on: 
+      - './Docker/config/suricata.yaml:/etc/suricata/suricata.yaml'
+      - './Docker/logs/eve.json:/var/log/suricata/eve.json'
+      - './Docker/config/suricata.rules:/etc/suricata/rules/suricata.rules'
+    depends_on:
       - kibana
     networks:
       for-surikata-IDS:
         ipv4_address: 192.168.205.21
-        
       IDS_network:
         ipv4_address: 192.168.203.2
-    cap_add: 
+    cap_add:
       - NET_ADMIN
       - SYS_ADMIN
-    
   ubuntu:
-    image: ubuntu:latest
-    container_name:  ubuntu
-    volumes: 
-      - ./Docker/config/entry_ubuntu:/root/entry_ubuntu.sh
+    image: 'ubuntu:latest'
+    container_name: ubuntu
+    volumes:
+      - './Docker/config/entry_ubuntu:/root/entry_ubuntu.sh'
     entrypoint: /root/entry_ubuntu.sh
-    networks: 
+    networks:
       IDS_network:
         ipv4_address: 192.168.203.3
-    cap_add: 
+    cap_add:
       - NET_ADMIN
       - SYS_ADMIN
-
-
-networks: 
+networks:
   for-surikata-IDS:
     ipam:
       driver: default
@@ -104,11 +90,7 @@ networks:
         - subnet: 192.168.205.16/28
   IDS_network:
     driver: bridge
-    ipam:     # for-inline
+    ipam:
       driver: default
-      config: 
+      config:
         - subnet: 192.168.203.0/28
-          # gateway: 192.168.203.2
-  
-
-
